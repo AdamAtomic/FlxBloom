@@ -31,7 +31,10 @@ package
 			//Note that we do not add it to the game state!  It's just a helper, not a real sprite.
 			
 			//Then we're going to alter the scale and position of FlxState.screen
-			// so that it always draws into the _fx buffer correctly
+			// so that it always draws into the _fx buffer correctly.
+			//If this math looks kind of weird, it's because we have to account for
+			// the fact that currently flixel always scales and rotates things
+			// around their center!
 			screen.x = (FlxG.width/_blur - FlxG.width)/2;
 			screen.y = (FlxG.height/_blur - FlxG.height)/2;
 			screen.scale.x = 1/_blur;
