@@ -10,8 +10,8 @@ package
 		public function MenuState()
 		{
 			//Title text, nothing crazy here!
-			var t:FlxText = new FlxText(0,FlxG.height/2-10,FlxG.width,"FlxBloom");
-			t.size = 16;
+			var t:FlxText = new FlxText(0,FlxG.height/2-20,FlxG.width,"FlxBloom");
+			t.size = 32;
 			t.alignment = "center";
 			add(t);
 			
@@ -24,7 +24,7 @@ package
 			_fx.scale.x = _blur;				//Scale it up to be the same size as the screen again
 			_fx.scale.y = _blur;
 			_fx.antialiasing = true;			//Set AA to true for maximum blurry
-			_fx.alpha = 0.50;					//Set alpha to 50% so the bloom isn't overwhelming
+			_fx.color = 0xafffff;				//Tint it a little, cuz that looks cool
 			_fx.blend = "screen";				//Finally, set blend mode to "screen" (important!)
 			//Note that we do not add it to the game state!  It's just a helper, not a real sprite.
 			
@@ -45,14 +45,14 @@ package
 			var e:FlxEmitter = new FlxEmitter();
 			e.width = FlxG.width;
 			e.y = FlxG.height+8;
-			e.delay = 0.03;
-			e.gravity = -80;
+			e.delay = 0.08;
+			e.gravity = -40;
 			e.setXVelocity();
-			e.setYVelocity(-100,0);
-			var particles:uint = 100;
+			e.setYVelocity(-50,0);
+			var particles:uint = 50;
 			var a:Array = new Array();
 			for(var i:uint = 0; i < particles; i++)
-				a.push(add(new FlxSprite()));
+				a.push(add((new FlxSprite()).createGraphic(16,16)));
 			add(e.loadSprites(a));
 		}
 		
