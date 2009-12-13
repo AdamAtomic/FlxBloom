@@ -21,8 +21,6 @@ package
 			_fx.createGraphic(FlxG.width/_blur,FlxG.height/_blur,0,true);
 			_fx.x = (FlxG.width-_fx.width)/2;	//Then we center it
 			_fx.y = (FlxG.height-_fx.height)/2;
-			_fx.scrollFactor.x = 0;				//Make sure it doesn't move even if the level moves
-			_fx.scrollFactor.y = 0;
 			_fx.scale.x = _blur;				//Scale it up to be the same size as the screen again
 			_fx.scale.y = _blur;
 			_fx.antialiasing = true;			//Set AA to true for maximum blurry
