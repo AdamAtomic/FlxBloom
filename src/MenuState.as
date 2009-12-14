@@ -4,7 +4,7 @@ package
 
 	public class MenuState extends FlxState
 	{
-		private const _blur:uint = 8;	//How much light bloom to have - larger numbers = more
+		private const _bloom:uint = 8;	//How much light bloom to have - larger numbers = more
 		private var _fx:FlxSprite;		//Our helper sprite - basically a mini screen buffer (see below)
 		
 		public function MenuState()
@@ -18,9 +18,9 @@ package
 			//This is the sprite we're going to use to help with the light bloom effect
 			//First, we're going to initialize it to be a fraction of the screens size
 			_fx = new FlxSprite();
-			_fx.createGraphic(FlxG.width/_blur,FlxG.height/_blur,0,true);
+			_fx.createGraphic(FlxG.width/_bloom,FlxG.height/_bloom,0,true);
 			_fx.origin.x = _fx.origin.y = 0;	//Zero the origin so scaling goes from top-left not center
-			_fx.scale.x = _fx.scale.y = _blur;	//Scale it up to be the same size as the screen again
+			_fx.scale.x = _fx.scale.y = _bloom;	//Scale it up to be the same size as the screen again
 			_fx.antialiasing = true;			//Set AA to true for maximum blurry
 			_fx.color = 0xafffff;				//Tint it a little, cuz that looks cool
 			_fx.blend = "screen";				//Finally, set blend mode to "screen" (important!)
@@ -29,7 +29,7 @@ package
 			//Then we scale the screen buffer down, so it draws a smaller version of itself
 			// into our tiny FX buffer, which is then scaled up.  The net result of this operation
 			// is a blurry image that we can render back over the screen buffer to create the bloom.
-			screen.scale.x = screen.scale.y = 1/_blur;
+			screen.scale.x = screen.scale.y = 1/_bloom;
 			
 			//This is the particle emitter that spews things off the bottom of the screen.
 			//I'm not going to go over it in too much detail here, but basically we
