@@ -19,28 +19,21 @@ package
 			//First, we're going to initialize it to be a fraction of the screens size
 			_fx = new FlxSprite();
 			_fx.createGraphic(FlxG.width/_blur,FlxG.height/_blur,0,true);
-			_fx.x = (FlxG.width-_fx.width)/2;	//Then we center it
-			_fx.y = (FlxG.height-_fx.height)/2;
-			_fx.scale.x = _blur;				//Scale it up to be the same size as the screen again
-			_fx.scale.y = _blur;
+			_fx.origin.x = _fx.origin.y = 0;	//Zero the origin so scaling goes from top-left not center
+			_fx.scale.x = _fx.scale.y = _blur;	//Scale it up to be the same size as the screen again
 			_fx.antialiasing = true;			//Set AA to true for maximum blurry
 			_fx.color = 0xafffff;				//Tint it a little, cuz that looks cool
 			_fx.blend = "screen";				//Finally, set blend mode to "screen" (important!)
 			//Note that we do not add it to the game state!  It's just a helper, not a real sprite.
 			
-			//Then we're going to alter the scale and position of FlxState.screen
-			// so that it always draws into the _fx buffer correctly.
-			//If this math looks kind of weird, it's because we have to account for
-			// the fact that currently flixel always scales and rotates things
-			// around their center!
-			screen.x = (FlxG.width/_blur - FlxG.width)/2;
-			screen.y = (FlxG.height/_blur - FlxG.height)/2;
-			screen.scale.x = 1/_blur;
-			screen.scale.y = 1/_blur;
+			//Then we scale the screen buffer down, so it draws a smaller version of itself
+			// into our tiny FX buffer, which is then scaled up.  The net result of this operation
+			// is a blurry image that we can render back over the screen buffer to create the bloom.
+			screen.scale.x = screen.scale.y = 1/_blur;
 			
 			//This is the particle emitter that spews things off the bottom of the screen.
 			//I'm not going to go over it in too much detail here, but basically we
-			// create the emitter, then we create 100 default sprites and add them to it.
+			// create the emitter, then we create 50 16x16 sprites and add them to it.
 			//Note that both the sprites we create and the emitter ARE added to the game state.
 			var e:FlxEmitter = new FlxEmitter();
 			e.width = FlxG.width;
@@ -61,19 +54,11 @@ package
 		// and that FlxState.screen has been filled with the game's visual contents.
 		override public function postProcess():void
 		{
-			//The actual blur process is quite simple since we set
-			// everything up in the constructor.
-			//First we draw the contents of the screen onto the FX buffer:
-			_fx.draw(screen,screen.x,screen.y);
-			//Then we draw the contents of the FX buffer back onto the screen:
-			screen.draw(_fx,_fx.x,_fx.y);
-			//Remember in the constructor we changed the scale of these objects,
-			// their positions, and their blending modes.  Otherwise this part
-			// would look more complex.
-			//Finally, if you are doing multiple post-process effects, you may
-			// not be able to simply pre-set FlxState.screen, because you may
-			// need to use it at different scales or blend modes.
-			//Ok that's it, have fun!!
+			//The actual blur process is quite simple now.
+			//First we draw the contents of the screen onto the tiny FX buffer:
+			_fx.draw(screen);
+			//Then we draw the scaled-up contents of the FX buffer back onto the screen:
+			screen.draw(_fx);
 		}
 	}
 }
