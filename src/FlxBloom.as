@@ -9,7 +9,7 @@ package
 		public function FlxBloom()
 		{
 			super(320,240,MenuState,2);
-			showLogo = false;
+			//showLogo = false;
 		}
 	}
 }

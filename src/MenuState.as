@@ -7,7 +7,7 @@ package
 		private const _bloom:uint = 8;	//How much light bloom to have - larger numbers = more
 		private var _fx:FlxSprite;		//Our helper sprite - basically a mini screen buffer (see below)
 		
-		public function MenuState()
+		override public function create():void
 		{
 			//Title text, nothing crazy here!
 			var t:FlxText = new FlxText(0,FlxG.height/2-20,FlxG.width,"FlxBloom");
@@ -34,19 +34,24 @@ package
 			//This is the particle emitter that spews things off the bottom of the screen.
 			//I'm not going to go over it in too much detail here, but basically we
 			// create the emitter, then we create 50 16x16 sprites and add them to it.
-			//Note that both the sprites we create and the emitter ARE added to the game state.
 			var e:FlxEmitter = new FlxEmitter();
 			e.width = FlxG.width;
 			e.y = FlxG.height+8;
 			e.delay = 0.08;
 			e.gravity = -40;
-			e.setXVelocity();
-			e.setYVelocity(-50,0);
+			e.setXSpeed();
+			e.setYSpeed(-50,0);
+			var s:FlxSprite;
 			var particles:uint = 50;
-			var a:Array = new Array();
 			for(var i:uint = 0; i < particles; i++)
-				a.push(add((new FlxSprite()).createGraphic(16,16)));
-			add(e.loadSprites(a));
+			{
+				s = new FlxSprite();
+				s.createGraphic(16,16);
+				s.exists = false;
+				e.add(s);
+			}
+			e.start(false);
+			add(e);
 		}
 		
 		//This is the new hotness!  This is essentially a callback from the game rendering loop,
