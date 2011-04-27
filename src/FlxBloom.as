@@ -8,8 +8,8 @@ package
 	{
 		public function FlxBloom()
 		{
-			super(320,240,MenuState,2);
-			//showLogo = false;
+			super(640,480,PlayState,1,60,60);
+			forceDebugger = true;
 		}
 	}
 }
